@@ -1,2 +1,2 @@
 # Research
-Code created for merging/manipulating data
+Code created merging and manipulating research data
