@@ -73,10 +73,17 @@ sym$income <- factor(sym$income,
 
 ######################################################################################
 
-sym.new <- sym # Making a copy of the data in a new variable
-sym.new[sym.new==""] <- NA # Making all blank cells NA
-sym.new$color <- NA # Creating a new column "color" to differentiate between green and white
-sym.new <- sym.new[, c(1:14, 875, 15:874)] # Moving "color" next to "consent"
+# Making a copy of the data in a new variable
+sym.new <- sym 
+
+# Making all blank cells NA
+sym.new[sym.new==""] <- NA 
+
+# Creating a new column "color" to differentiate between green and white
+sym.new$color <- NA 
+
+# Moving "color" next to "consent"
+sym.new <- sym.new[, c(1:14, 875, 15:874)] 
 
 # Loop to shift green_practice rows
 for(i in 1:101){
