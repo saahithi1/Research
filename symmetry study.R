@@ -2,9 +2,7 @@
 setwd("~/Desktop/Research/Symmetry Study")
 
 # Loading packages
-library(ggplot2)
 library(dplyr)
-library(jmv)
 library(foreign)
 library("tidyr")  
 
