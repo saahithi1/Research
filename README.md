@@ -1,5 +1,5 @@
 # Research
-Code created merging and manipulating research data
+Code for the Behavioral Lab at UVA Batten
 
 * FEVS_merging - merge 200+ FEVS datasets
 * symmetry_study - restructure data
