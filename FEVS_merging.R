@@ -19,7 +19,7 @@ for (file in file_list){
   if (!exists("dataset")){
     dataset <- read.xlsx(file)
   }
-}
+} 
 
 # Export dataframe into an excel file
 write.xlsx(dataset, "all_combined.xlsx")
