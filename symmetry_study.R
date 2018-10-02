@@ -103,7 +103,24 @@ sym.new <- sym.new[, -c(120:223)]
 colnames(sym.new)
 
 # Rename white_practice columns to practice
-sub("white_", "", colnames(sym.new))
+colnames(sym.new) <- sub("white_", "", colnames(sym.new))
+colnames(sym.new)
+
+# Recoding  variables to "0" and "1" (Unselected = 0, Selected = 1)
+# Here's a function to do it a little faster
+recoding <- function(vrbl){
+  vrbl <- recode(vrbl,`1` = 0, `2` = 1)
+  vrbl
+}
+
+# Applying to all relevant columns:
+sym.new <- mutate_at(sym.new, vars(pattern_1_11:pattern_1_110,
+                                   pattern_2_11:pattern_2_110,
+                                   pattern_3_11:pattern_3_110,
+                                   pattern_4_11:pattern_4_110,
+                                   pattern_5_11:pattern_5_110,
+                                   pattern_6_11:pattern_6_110,
+                                   practice_11:practice_110), funs(recoding))
 
 # Export file
 write.csv(sym.new, file="sym.csv")
