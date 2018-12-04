@@ -127,37 +127,41 @@ write.csv(sym.new, file="sym.csv")
 
 # Check for symmetry
 
-grid <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106)
-symmetry.vector <- NULL
+grid <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106) # index of rows in 10x10 grid
+symmetry.vector <- NULL                               # vector to store final symmetric/not symmetric values
 
-for(r in 1:101){
-  check <- list()
+for(r in 1:101){                                      # for loop to iterate through each participant row
+  check <- list()                                     # empty list to store symmetric/not symmetric values for each grid row
   
-  for (i in grid){
-    index_left <- i
-    index_right <- index_left + 9
+  for (i in grid){                                    # for loop to iterate through grid rows
+    index_left <- i                                   # variable to identify the index of the left side of grid row
+    index_right <- index_left + 9                     # variable to identify the index of the right side of grid row
     name <- paste('check row',i,sep=' ')
-    count <- 1
-    while (count < 6){
-      left_side <- sym.new[r, index_left]
-      right_side <- sym.new[r, index_right]
+    count <- 1                                        # initial count to keep track of iterations
+    while (count <= 5){                               # while loop to repeat left and right comparisons 5 times
+      left_side <- sym.new[r, index_left]             # get value of left side using index
+      right_side <- sym.new[r, index_right]           # get value of right side using index
       
-      if(identical(left_side, right_side) == TRUE)
-      {index_left <- index_left + 1
-      index_right <- index_right - 1
-      check[[name]] <- "symmetric"}
+      if(identical(left_side, right_side) == TRUE)    # check if left is equal to right - if so, add "symmetric" to list
+      {check[[name]] <- "symmetric"}
       
-      else
+      else                                            # if left is not equal to right - add "not symmetric" to list
       {check[[name]] <- "not symmetric"}
       
-      count = count + 1
+      index_left <- index_left + 1                    # update left and right indices to check next left/right pair
+      index_right <- index_right - 1
+      count = count + 1                               # update count to keep track of next iteration
     }
   }
   
-  if("not symmetric" %in% check == TRUE)
+  if("not symmetric" %in% check == TRUE)              # if any grid row is not symmetric - that means the whole picture is not symmetric
   {symmetry.vector[r] <- "not symmetric"}
   
   else
   {symmetry.vector[r] <- "symmetric"}
 }
 
+# Count number of rows not symmetric
+symmetry.vector
+which(symmetry.vector == "not symmetric")
+length(which(symmetry.vector == "not symmetric"))
