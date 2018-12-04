@@ -130,7 +130,7 @@ write.csv(sym.new, file="sym.csv")
 # Verifying Symmetry 
 ######################################################################################
 
-# Check for symmetry
+# Check participant rows
 
 grid <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106) # index of 1st column indices in 10x10 grid
 symmetry.vector <- NULL                               # vector to store final symmetric/not symmetric values
