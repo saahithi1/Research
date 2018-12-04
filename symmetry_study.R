@@ -136,7 +136,7 @@ grid <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106) # index of 1st column indi
 symmetry.vector <- NULL                               # vector to store final symmetric/not symmetric values
 
 for(r in 1:101){                                      # for loop to iterate through each participant row
-  check <- list()                                     # empty list to store symmetric/not symmetric values for each grid row
+  check <- NULL                                       # empty vector to store symmetric/not symmetric values for each grid row
   
   for (i in grid){                                    # for loop to iterate through grid rows
     index_left <- i                                   # variable to identify the index of the left side of grid row
@@ -147,11 +147,11 @@ for(r in 1:101){                                      # for loop to iterate thro
       left_side <- sym.new[r, index_left]             # get value of left side using index
       right_side <- sym.new[r, index_right]           # get value of right side using index
       
-      if(identical(left_side, right_side) == TRUE)    # check if left is equal to right - if so, add "symmetric" to list
-      {check[[name]] <- "symmetric"}
+      if(identical(left_side, right_side) == TRUE)    # check if left is equal to right - if so, add 0 to vector
+      {check <- append(check, 0)}
       
-      else                                            # if left is not equal to right - add "not symmetric" to list
-      {check[[name]] <- "not symmetric"}
+      else                                            # if left is not equal to right - add 1 to vector
+      {check <- append(check, 1)}
       
       index_left <- index_left + 1                    # update left and right indices to check next left/right pair
       index_right <- index_right - 1
