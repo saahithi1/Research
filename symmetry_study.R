@@ -170,3 +170,31 @@ for(r in 1:101){                                      # for loop to iterate thro
 symmetry.vector
 which(symmetry.vector == "not symmetric")
 length(which(symmetry.vector == "not symmetric"))
+
+######################################################################################
+# Testing
+######################################################################################
+
+check <- NULL
+for (i in grid){
+  index_left <- i
+  index_right <- index_left + 9
+  name <- paste('row',i,sep=' ')
+  count <- 1
+  while (count <= 5){
+    left_side <- sym.new[74, index_left]
+    right_side <- sym.new[74, index_right]
+    
+    if(identical(left_side, right_side) == TRUE)   
+    {check <- append(check, 0)}
+    
+    else                                            
+    {check <- append(check, 1)}
+    
+    index_left <- index_left + 1                   
+    index_right <- index_right - 1
+    count = count + 1   
+  }
+}
+check
+m <- matrix(check, nrow=10, byrow=T); m
