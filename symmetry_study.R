@@ -128,11 +128,13 @@ write.csv(sym.new, file="sym.csv")
 # Check for symmetry
 
 grid <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106)
+check <- list()
 
-for (row in grid){
-  index_left <- row
+for (i in grid){
+  index_left <- i
   index_right <- index_left + 9
-  count = 1
+  name <- paste('check row',i,sep='')
+  count <- 1
   while (count < 6){
     left_side <- sym.new[1, index_left]
     right_side <- sym.new[1, index_right]
@@ -140,11 +142,12 @@ for (row in grid){
     if(identical(left_side, right_side) == TRUE)
     {index_left <- index_left + 1
     index_right <- index_right - 1
-    print("Symmetrical")
-    print(count)}
+    check[[name]] <- "symmetric"}
+    
     else
-    {print("Not symmetrical")}
+    {check[[name]] <- "not symmetric"}
     
     count = count + 1
   }
 }
+
