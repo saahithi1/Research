@@ -131,8 +131,15 @@ write.csv(sym.new, file="sym.csv")
 ######################################################################################
 
 # Check participant rows
+practice.list <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106)
+pattern.1 <- list(132, 142, 152, 162, 172, 182, 192, 202, 212, 222)
+pattern.2 <- list(236, 246, 256, 266, 276, 286, 296, 306, 316, 326)
+pattern.3 <- list(340, 350, 360, 370, 380, 390, 400, 410, 420, 430)
+pattern.4 <- list(444, 454, 464, 474, 484, 494, 504, 514, 524, 534)
+pattern.5 <- list(548, 558, 568, 578, 588, 598, 608, 618, 628, 638)
+pattern.6 <- list(652, 662, 672, 682, 692, 702, 712, 722, 732, 742)
 
-grid <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106) # index of 1st column indices in 10x10 grid
+grid <- practice.list                                 # index of 1st column indices in 10x10 grid; replace with patterns to check other grids
 symmetry.vector <- NULL                               # vector to store final symmetric/not symmetric values
 
 for(r in 1:101){                                      # for loop to iterate through each participant row
