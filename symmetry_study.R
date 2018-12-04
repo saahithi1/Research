@@ -127,22 +127,24 @@ write.csv(sym.new, file="sym.csv")
 
 # Check for symmetry
 
-index_left <- 16 # Column Q - 1
-index_right <- 25 # Column Z - 1
-count = 1
+grid <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106)
 
-while (count < 6){
-  left_side <- sym.new[1, index_left]
-  right_side <- sym.new[1, index_right]
-  
-  if(identical(left_side, right_side) == TRUE)
-  {index_left <- index_left + 1
-  index_right <- index_right - 1
-  print("Symmetrical")
-  print(count)}
-  else
-  {print("Not symmetrical")}
-  
-  count = count + 1
+for (row in grid){
+  index_left <- row
+  index_right <- index_left + 9
+  count = 1
+  while (count < 6){
+    left_side <- sym.new[1, index_left]
+    right_side <- sym.new[1, index_right]
+    
+    if(identical(left_side, right_side) == TRUE)
+    {index_left <- index_left + 1
+    index_right <- index_right - 1
+    print("Symmetrical")
+    print(count)}
+    else
+    {print("Not symmetrical")}
+    
+    count = count + 1
+  }
 }
-
