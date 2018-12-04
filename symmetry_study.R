@@ -125,6 +125,11 @@ sym.new <- mutate_at(sym.new, vars(pattern_1_11:pattern_1_110,
 # Export file
 write.csv(sym.new, file="sym.csv")
 
+
+######################################################################################
+# Verifying Symmetry 
+######################################################################################
+
 # Check for symmetry
 
 grid <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106) # index of rows in 10x10 grid
