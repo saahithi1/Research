@@ -3,9 +3,9 @@ setwd("~/Desktop/Research/Symmetry Study")
 
 # Loading packages
 library(dplyr)
-library(foreign)
-library("tidyr")  
-
+library(foreign) 
+library(ggplot2)
+library(reshape2)
 
 # Reading in raw data 
 sym<-read.csv("Symmetry_Study___Practice_Trial_Defaults copy.csv", header=FALSE, skip=2)
@@ -324,5 +324,16 @@ length(which(symmetry.vector == "not symmetric"))
 # Recreating Grids
 ######################################################################################
 
+# from https://stackoverflow.com/questions/12081843/r-matrix-plot-with-colour-threshold-and-grid
 
+x <- sym.new[1,16:115]
+x <- matrix(x,nrow=10)
+
+x1 <- melt(x)
+names(x1) <- c("x","y","color")
+
+x1$color <- factor(x1$color==1)
+levels(x1$color) <- c("0","1")
+
+qplot(x, y, fill=color, data=x1,geom='tile')
 
