@@ -348,4 +348,4 @@ r <- 2
 title <- paste("Participant", r, sep = ' ')
 qplot(x, y, fill=color, data=x1,geom='tile') + labs(title=title, x="", y="")
 
-ggsave(filename="test.jpg", plot=last_plot())
+# ggsave(plot,filename=paste("Participant",r,".jpg",sep=""))
