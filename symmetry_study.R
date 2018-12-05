@@ -335,7 +335,7 @@ grid.pattern.5 <- 548:647
 grid.pattern.6 <- 652:751
 
 
-x <- sym.new[1,16:115]
+x <- as.numeric(sym.new[1,16:115])
 x <- matrix(x,nrow=10)
 
 x1 <- melt(x)
@@ -346,6 +346,6 @@ levels(x1$color) <- c("0","1")
 
 r <- 2
 title <- paste("Participant", r, sep = ' ')
-qplot(x, y, fill=color, data=x1,geom='tile') + labs(title=title, x="", y="") + xlim(0,10) + ylim(0,10)
+qplot(x, y, fill=color, data=x1,geom='tile') + labs(title=title, x="", y="")
 
 ggsave(filename="test.jpg", plot=last_plot())
