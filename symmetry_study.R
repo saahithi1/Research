@@ -326,6 +326,15 @@ length(which(symmetry.vector == "not symmetric"))
 
 # from https://stackoverflow.com/questions/12081843/r-matrix-plot-with-colour-threshold-and-grid
 
+grid.practice <- 16:115 
+grid.pattern.1 <- 132:231
+grid.pattern.2 <- 236:335
+grid.pattern.3 <- 340:439
+grid.pattern.4 <- 444:543
+grid.pattern.5 <- 548:647
+grid.pattern.6 <- 652:751
+
+
 x <- sym.new[1,16:115]
 x <- matrix(x,nrow=10)
 
@@ -335,5 +344,8 @@ names(x1) <- c("x","y","color")
 x1$color <- factor(x1$color==1)
 levels(x1$color) <- c("0","1")
 
-qplot(x, y, fill=color, data=x1,geom='tile')
+r <- 2
+title <- paste("Participant", r, sep = ' ')
+qplot(x, y, fill=color, data=x1,geom='tile') + labs(title=title, x="", y="") + xlim(0,10) + ylim(0,10)
 
+ggsave(filename="test.jpg", plot=last_plot())
