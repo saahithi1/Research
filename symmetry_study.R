@@ -127,19 +127,19 @@ write.csv(sym.new, file="sym.csv")
 
 
 ######################################################################################
-# Verifying Symmetry 
+# Verifying Left-Right Symmetry 
 ######################################################################################
 
-# Check participant rows
-practice.list <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106)
-pattern.1 <- list(132, 142, 152, 162, 172, 182, 192, 202, 212, 222)
-pattern.2 <- list(236, 246, 256, 266, 276, 286, 296, 306, 316, 326)
-pattern.3 <- list(340, 350, 360, 370, 380, 390, 400, 410, 420, 430)
-pattern.4 <- list(444, 454, 464, 474, 484, 494, 504, 514, 524, 534)
-pattern.5 <- list(548, 558, 568, 578, 588, 598, 608, 618, 628, 638)
-pattern.6 <- list(652, 662, 672, 682, 692, 702, 712, 722, 732, 742)
+# Identify column indices to use in loop
+lr.practice <- list(16, 26, 36, 46, 56, 66, 76, 86, 96, 106)
+lr.pattern.1 <- list(132, 142, 152, 162, 172, 182, 192, 202, 212, 222)
+lr.pattern.2 <- list(236, 246, 256, 266, 276, 286, 296, 306, 316, 326)
+lr.pattern.3 <- list(340, 350, 360, 370, 380, 390, 400, 410, 420, 430)
+lr.pattern.4 <- list(444, 454, 464, 474, 484, 494, 504, 514, 524, 534)
+lr.pattern.5 <- list(548, 558, 568, 578, 588, 598, 608, 618, 628, 638)
+lr.pattern.6 <- list(652, 662, 672, 682, 692, 702, 712, 722, 732, 742)
 
-grid <- practice.list                                 # index of 1st column indices in 10x10 grid; replace with patterns to check other grids
+grid <- lr.pattern.6                                  # list of 1st column indices in 10x10 grid; replace with patterns to check other grids
 symmetry.vector <- NULL                               # vector to store final symmetric/not symmetric values
 
 for(r in 1:101){                                      # for loop to iterate through each participant row
@@ -149,7 +149,7 @@ for(r in 1:101){                                      # for loop to iterate thro
     index_left <- i                                   # variable to identify the index of the left side of grid row
     index_right <- index_left + 9                     # variable to identify the index of the right side of grid row
     count <- 1                                        # initial count to keep track of iterations
-    while (count <= 5){                               # while loop to repeat left and right comparisons 5 times
+    while (count <= 5){                               # while loop to repeat left/right comparisons 5 times
       left_side <- sym.new[r, index_left]             # get value of left side using index
       right_side <- sym.new[r, index_right]           # get value of right side using index
       
@@ -165,8 +165,8 @@ for(r in 1:101){                                      # for loop to iterate thro
     }
   }
   
-  if("not symmetric" %in% check == TRUE)              # if any grid row is not symmetric - that means the whole picture is not symmetric
-  {symmetry.vector[r] <- "not symmetric"}
+  if(1 %in% check == TRUE)                            # if any grid row is not symmetric - that means the whole picture is not symmetric
+  {symmetry.vector[r] <- "not symmetric"}             # update symmetry.vector to have one value for each row - "not symmetric" or "symmetric"
   
   else
   {symmetry.vector[r] <- "symmetric"}
@@ -177,10 +177,48 @@ symmetry.vector
 which(symmetry.vector == "not symmetric")
 length(which(symmetry.vector == "not symmetric"))
 
+# Non Symmetric Rows 
+
+# Practice - 78
+# [1]   2   3   4   5   6   7   8   9  10  11  12  13  15  16  17  19  20  21  22  24  25  26  29  30  32  33  34  37
+# [29]  39  40  41  42  43  44  45  46  47  48  49  50  52  53  54  55  59  60  61  64  65  67  68  69  71  72  73  74
+# [57]  75  77  79  80  81  83  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 101
+
+# Pattern 1 - 100
+# [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34
+# [35]  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68
+# [69]  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  90  91  92  93  94  95  96  97  98  99 100 101
+
+# Pattern 2 - 101
+# [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34
+# [35]  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68
+# [69]  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 101
+
+# Pattern 3 - 101
+# [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34
+# [35]  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68
+# [69]  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 101
+
+# Pattern 4 - 100
+# [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+# [35]  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69
+# [69]  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 101
+
+# Pattern 5 - 100
+# [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34
+# [35]  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  65  66  67  68  69
+# [69]  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 101
+
+# Pattern 6 - 4
+# 15 70 74 89
+
+
 ######################################################################################
-# Testing
+# Testing 
 ######################################################################################
 
+# verify symmetry
+grid <- lr.pattern.3
 check <- NULL
 for (i in grid){
   index_left <- i
@@ -188,8 +226,8 @@ for (i in grid){
   name <- paste('row',i,sep=' ')
   count <- 1
   while (count <= 5){
-    left_side <- sym.new[74, index_left]
-    right_side <- sym.new[74, index_right]
+    left_side <- sym.new[15, index_left]
+    right_side <- sym.new[15, index_right]
     
     if(identical(left_side, right_side) == TRUE)   
     {check <- append(check, 0)}
@@ -202,5 +240,89 @@ for (i in grid){
     count = count + 1   
   }
 }
-check
+
+# symmetry matrix
 m <- matrix(check, nrow=10, byrow=T); m
+
+######################################################################################
+# Verifying Up-Down Symmetry 
+######################################################################################
+
+# Check participant rows 
+ud.practice <- list(16, 17, 18, 19, 20, 21, 22, 23, 24, 25)
+ud.pattern.1 <- list(132, 133, 134, 135, 136, 137, 138, 139, 140, 141)
+ud.pattern.2 <- list(236, 246, 256, 266, 276, 286, 296, 306, 316, 326)
+ud.pattern.3 <- list(340, 341, 342, 343, 344, 345, 346, 347, 348, 349)
+ud.pattern.4 <- list(444, 445, 446, 447, 448, 449, 450, 451, 452, 453)
+ud.pattern.5 <- list(548, 549, 550, 551, 552, 553, 554, 555, 556, 557)
+ud.pattern.6 <- list(652, 653, 654, 655, 656, 657, 658, 659, 660, 661)
+
+grid <- ud.pattern.1                                    
+symmetry.vector <- NULL                               
+
+for(r in 1:101){                                      
+  check <- NULL                                       
+  
+  for (i in grid){                                    
+    index_top <- i                                  
+    index_bottom <- index_top + 90                     
+    count <- 1                                        
+    while (count <= 5){                              
+      top_side <- sym.new[r, index_top]             
+      bottom_side <- sym.new[r, index_bottom]
+      
+      if(identical(top_side, bottom_side) == TRUE)    
+      {check <- append(check, 0)}
+      
+      else                                           
+      {check <- append(check, 1)}
+      
+      index_top <- index_top + 10                  
+      index_bottom <- index_bottom - 10
+      count = count + 1                           
+    }
+  }
+  
+  if(1 %in% check == TRUE)                            
+  {symmetry.vector[r] <- "not symmetric"}             
+  
+  else
+  {symmetry.vector[r] <- "symmetric"}
+}
+
+# Count number of columns not symmetric
+symmetry.vector
+which(symmetry.vector == "not symmetric")
+length(which(symmetry.vector == "not symmetric"))
+
+# Non Symmetric Columns 
+
+# Practice - 81
+# [1]   2   3   4   5   6   7   8   9  10  11  12  13  15  16  17  19  20  21  22  24  25  26  27  29  30  32  33  34
+# [29]  37  39  40  41  42  43  44  45  46  47  48  49  50  52  53  54  55  57  59  60  61  64  65  67  68  69  71  72
+# [57]  73  74  75  76  77  79  80  81  83  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 101
+
+# Pattern 1 
+
+
+# Pattern 2 
+
+
+# Pattern 3 
+
+
+# Pattern 4 
+
+
+# Pattern 5 
+
+
+# Pattern 6 
+
+
+######################################################################################
+# Recreating Grids
+######################################################################################
+
+
+
