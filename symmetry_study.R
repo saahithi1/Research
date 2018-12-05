@@ -148,7 +148,6 @@ for(r in 1:101){                                      # for loop to iterate thro
   for (i in grid){                                    # for loop to iterate through grid rows
     index_left <- i                                   # variable to identify the index of the left side of grid row
     index_right <- index_left + 9                     # variable to identify the index of the right side of grid row
-    name <- paste('check row',i,sep=' ')
     count <- 1                                        # initial count to keep track of iterations
     while (count <= 5){                               # while loop to repeat left and right comparisons 5 times
       left_side <- sym.new[r, index_left]             # get value of left side using index
