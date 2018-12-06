@@ -177,23 +177,23 @@ symmetry.vector
 which(symmetry.vector == "not symmetric")
 length(which(symmetry.vector == "not symmetric"))
 
-# Non Symmetric Rows 
+# Number of Non Symmetric Rows 
 
 # Practice - 78
 # 1 14 18 23 27 28 31 35 36 38 51 56 57 58 62 63 66 70 76 78 82 84 85 are symmetric
 
 # Pattern 1 - 100
-# 89 is symmetric - 0
+# 89 is symmetric
 
 # Pattern 2 - 101
 
 # Pattern 3 - 101
 
 # Pattern 4 - 100
-# 19 is symmetric - 0
+# 19 is symmetric
 
 # Pattern 5 - 100
-# 64 is symmetric - 0
+# 64 is symmetric 
 
 # Pattern 6 - 4
 # 15 70 74 89 are not symmetric
@@ -284,26 +284,20 @@ length(which(symmetry.vector == "not symmetric"))
 # Non Symmetric Columns 
 
 # Practice - 81
-# [1]   2   3   4   5   6   7   8   9  10  11  12  13  15  16  17  19  20  21  22  24  25  26  27  29  30  32  33  34
-# [29]  37  39  40  41  42  43  44  45  46  47  48  49  50  52  53  54  55  57  59  60  61  64  65  67  68  69  71  72
-# [57]  73  74  75  76  77  79  80  81  83  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 101
+# 1 14 18 23 28 31 35 36 38 51 56 58 62 63 66 70 78 82 84 85 are symmetric
 
-# Pattern 1 
+# Pattern 1 - 100
+# 89 is symmetric
 
+# Pattern 2 - 101
 
-# Pattern 2 
+# Pattern 3 - 101
 
+# Pattern 4 - 101
 
-# Pattern 3 
+# Pattern 5 - 101
 
-
-# Pattern 4 
-
-
-# Pattern 5 
-
-
-# Pattern 6 
+# Pattern 6 - 101
 
 
 ######################################################################################
