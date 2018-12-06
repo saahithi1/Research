@@ -331,6 +331,25 @@ for(r in 1:101){
           scale_fill_manual(values=c("#EEF0EB", "#2EA666")) +
           theme(axis.text.x = element_blank(),axis.text.y = element_blank()) +
           scale_y_reverse() 
+  
+  ggsave(plot,filename=paste("Participant",r,".jpg",sep=""))
 }
 
-# ggsave(plot,filename=paste("Participant",r,".jpg",sep=""))
+######################################################################################
+# Testing 
+######################################################################################
+grid <- grid.pattern.5
+x <- as.numeric(sym.new[61,grid])
+x <- matrix(x,nrow=10);x
+
+x1 <- melt(x); x1
+names(x1)=c("x","y","color");x1
+x1$color <- factor(x1$color==1)
+levels(x1$color) <- c("0","1")
+
+title <- paste("Participant", 1, sep = ' ')
+qplot(x, y, fill=color, data=x1,geom='tile') + labs(title=title, x="", y="") + 
+  scale_fill_manual(values=c("#EEF0EB", "#2EA666")) +
+  theme(axis.text.x = element_blank(),axis.text.y = element_blank()) +
+  scale_y_reverse() 
+
