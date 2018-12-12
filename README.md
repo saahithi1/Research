@@ -1,5 +1,5 @@
 # Research
-Code for the Behavioral Lab at UVA Batten/SEC
+Code for the Behavioral Lab at UVA Batten
 
 R
 * FEVS_merging - merge 200+ FEVS datasets
