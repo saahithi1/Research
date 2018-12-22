@@ -14,3 +14,7 @@ t.test <- food.diary.mturk.t.data[3:5,]
 # remove saved rows from data frame (they'll be added back after merging)
 food.diary.mturk.w.data <- food.diary.mturk.w.data[-c(3, 4, 5, 215, 216, 217, 218),]
 food.diary.mturk.t.data <- food.diary.mturk.t.data[-c(3, 4, 5),]
+
+# merge mturk datasets
+w.t <- merge(food.diary.mturk.w.data, food.diary.mturk.t.data, by="Q47", all = TRUE)
+w.t.f <- merge(w.t, food.diary.mturk.f.data, by="Q47", all = TRUE)
