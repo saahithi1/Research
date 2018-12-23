@@ -20,4 +20,9 @@ all.mturk <- join_all(list(food.diary.mturk.w.data, food.diary.mturk.t.data, foo
                   by="Q47", type = "full")
 
 # export .csv
-write.csv()
+write.csv(all.mturk, file="merged.csv")
+
+
+###########
+# Testing # 
+###########
