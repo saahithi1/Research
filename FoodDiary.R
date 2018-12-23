@@ -16,8 +16,8 @@ food.diary.mturk.w.data <- food.diary.mturk.w.data[-c(3, 4, 5, 215, 216, 217, 21
 food.diary.mturk.t.data <- food.diary.mturk.t.data[-c(3, 4, 5),]
 
 # merge mturk datasets
-w.t <- merge(food.diary.mturk.w.data, food.diary.mturk.t.data, by="Q47", all = TRUE)
-w.t.f <- merge(w.t, food.diary.mturk.f.data, by="Q47", all = TRUE)
+all.mturk <- join_all(list(food.diary.mturk.w.data, food.diary.mturk.t.data, food.diary.mturk.f.data),
+                  by="Q47", type = "full")
 
 # export .csv
 write.csv(w.t.f, file="merged.csv")
