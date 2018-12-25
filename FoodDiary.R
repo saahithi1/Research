@@ -24,7 +24,6 @@ all.mturk <- join_all(list(food.diary.mturk.w.data, food.diary.mturk.t.data, foo
                   by="Q47", type = "full")
 
 # new variable for day
-
 all.mturk$day <- NA
 for (i in 1:230){
   count <- 0
