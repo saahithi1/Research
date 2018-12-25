@@ -35,6 +35,7 @@ for (i in 1:230){
   if (is.null(all.mturk$FEat[i]) == FALSE)
   {count <- count + 1}
   
+  all.mturk$day[i] <- count
 }
 
 # export .csv
