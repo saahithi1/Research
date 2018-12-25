@@ -20,6 +20,20 @@ all.mturk <- join_all(list(food.diary.mturk.w.data, food.diary.mturk.t.data, foo
                   by="Q47", type = "full")
 all.mturk <- rbind()
 
+# new variable for day
+
+all.mturk$day <- NA
+for (i in 1:230){
+  count <- 0
+  if (is.null(all.mturk$WEat[i]) == FALSE)
+  {count <- count + 1}
+  if (is.null(all.mturk$TEat[i]) == FALSE)
+  {count <- count + 1})
+  if (is.null(all.mturk$FEat[i]) == FALSE)
+  {count <- count + 1}
+  
+}
+
 # export .csv
 write.csv(all.mturk, file="merged.csv")
 
