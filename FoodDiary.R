@@ -29,6 +29,10 @@ food.diary.mturk.t.data <- food.diary.mturk.t.data[-c(3, 4, 5),]
 all.mturk <- join_all(list(food.diary.mturk.w.data, food.diary.mturk.t.data, food.diary.mturk.f.data),
                   by="Q47", type = "full")
 
+# new variable for mTurk or UVA participant
+all.mturk$participant <- "MTurk"
+food.diary.uva.data$participant <- "UVA"
+
 # new variable for day
 all.mturk$day <- NA
 for (i in 1:230){
