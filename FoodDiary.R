@@ -6,6 +6,12 @@ food.diary.mturk.w.data <- read.csv("TGFoodDiarymTurkW.csv")
 food.diary.mturk.t.data <- read.csv("TGFoodDiarymTurkT.csv")
 food.diary.mturk.f.data <- read.csv("TGFoodDiarymTurkFri.csv")
 
+# new variable for which dataset participant came from
+food.diary.uva.data$dataset <- "TGGoodDiaryUVA"
+food.diary.mturk.w.data <- "TGFoodDiarymTurkW"
+food.diary.mturk.t.data <- "TGFoodDiarymTurkT"
+food.diary.mturk.f.data <- "TGFoodDiarymTurkFri"
+
 # save rows with no worker ID/test
 noID <- food.diary.mturk.w.data[c(215, 216, 217, 218),]
 w.test <- food.diary.mturk.w.data[3:5,]
