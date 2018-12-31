@@ -9,12 +9,6 @@ food.diary.mturk.w.data <- read.csv("TGFoodDiarymTurkW.csv")
 food.diary.mturk.t.data <- read.csv("TGFoodDiarymTurkT.csv")
 food.diary.mturk.f.data <- read.csv("TGFoodDiarymTurkFri.csv")
 
-# new variable for which dataset participant came from
-food.diary.uva.data$dataset <- "TGGoodDiaryUVA"
-food.diary.mturk.w.data$dataset <- "TGFoodDiarymTurkW"
-food.diary.mturk.t.data$dataset <- "TGFoodDiarymTurkT"
-food.diary.mturk.f.data$dataset <- "TGFoodDiarymTurkFri"
-
 # save rows with no worker ID (and test data)
 noID <- food.diary.mturk.w.data[c(215, 216, 217, 218),]
 w.test <- food.diary.mturk.w.data[3:5,]
@@ -59,10 +53,3 @@ all.data <- rbind.fill(all.mturk, food.diary.uva.data)
 
 # export .csv
 write.csv(all.data, file="merged.csv")
-
-
-###########
-# Testing # 
-###########
-
-is.null(all.mturk$WEat[2])
