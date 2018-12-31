@@ -55,7 +55,7 @@ all.mturk$participant <- "MTurk"
 food.diary.uva.data$participant <- "UVA"
 
 # export .csv
-write.csv(all.mturk, file="merged.csv")
+write.csv(all.data, file="merged.csv")
 
 
 ###########
