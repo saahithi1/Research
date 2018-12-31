@@ -9,26 +9,11 @@ food.diary.mturk.w.data <- read.csv("TGFoodDiarymTurkW.csv", stringsAsFactors = 
 food.diary.mturk.t.data <- read.csv("TGFoodDiarymTurkT.csv", stringsAsFactors = FALSE)
 food.diary.mturk.f.data <- read.csv("TGFoodDiarymTurkFri.csv", stringsAsFactors = FALSE)
 
-# save rows with no worker ID (and test data)
-w.noID <- food.diary.mturk.w.data[c(215, 216, 217, 218),]
-w.test <- food.diary.mturk.w.data[3:5,]
-t.test <- food.diary.mturk.t.data[3:5,]
-
-# combine into one dataframe
-all.w <- bind_rows(w.noID, w.test)
-all.noID <- bind_rows(all.w, t.test)
-
-# remove rows w/o ID from data frame (they'll be added back after merging)
-food.diary.mturk.w.data <- food.diary.mturk.w.data[-c(3, 4, 5, 215, 216, 217, 218),]
-food.diary.mturk.t.data <- food.diary.mturk.t.data[-c(3, 4, 5),]
-
 # merge mturk datasets
 # from https://stackoverflow.com/questions/8091303/simultaneously-merge-multiple-data-frames-in-a-list
 all.mturk <- list(food.diary.mturk.w.data, food.diary.mturk.t.data, food.diary.mturk.f.data) %>% reduce(full_join, by = "Q47")
 
 # new variable "day" for the number of days completed
-all.noID$day <- 1                               # for participants w/o an ID, I set the variable equal to 1
-
 all.mturk$day <- NA
 for (i in 3:214){                               # for each row in Wednesday dataset
   value <- food.diary.mturk.w.data$Q47[i]       # store id as value
@@ -40,9 +25,6 @@ for (i in 3:214){                               # for each row in Wednesday data
   
   all.mturk$day[i] <- count                     # store final count for row
 }
-
-# add back rows with no ID
-all.mturk <- bind_rows(all.mturk, all.noID)
 
 # new variable for mTurk or UVA participant
 all.mturk$participant <- "MTurk"
