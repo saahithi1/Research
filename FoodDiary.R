@@ -4,10 +4,10 @@ library(purrr)
 library(tidyverse)
 
 # import data
-food.diary.uva.data <- read.csv("TGGoodDiaryUVA.csv")
-food.diary.mturk.w.data <- read.csv("TGFoodDiarymTurkW.csv")
-food.diary.mturk.t.data <- read.csv("TGFoodDiarymTurkT.csv")
-food.diary.mturk.f.data <- read.csv("TGFoodDiarymTurkFri.csv")
+food.diary.uva.data <- read.csv("TGGoodDiaryUVA.csv", stringsAsFactors = FALSE)
+food.diary.mturk.w.data <- read.csv("TGFoodDiarymTurkW.csv", stringsAsFactors = FALSE)
+food.diary.mturk.t.data <- read.csv("TGFoodDiarymTurkT.csv", stringsAsFactors = FALSE)
+food.diary.mturk.f.data <- read.csv("TGFoodDiarymTurkFri.csv", stringsAsFactors = FALSE)
 
 # save rows with no worker ID (and test data)
 noID <- food.diary.mturk.w.data[c(215, 216, 217, 218),]
