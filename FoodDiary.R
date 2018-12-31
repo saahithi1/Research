@@ -56,3 +56,55 @@ merge.1[is.na(merge.1)] <- ""
 
 # export .csv
 write.csv(merge.1, file="merge1.csv")
+
+############################################################################
+#################### merging by matching participant ID ####################
+############################################################################
+
+# record rows with no worker ID (and test data)
+w.noID = w.mturk.data[c(213, 214, 215, 216),]
+w.test = w.mturk.data[1:3,]
+t.test = t.mturk.data[1:3,]
+
+# combine into one dataframe
+all.w = bind_rows(w.noID, w.test)
+all.noID = bind_rows(all.w, t.test)
+
+# remove rows w/o ID from data frame (to be added back after merging)
+w.mturk.data = w.mturk.data[-c(1, 2, 3, 213, 214, 215, 216),]
+t.mturk.data = t.mturk.data[-c(1, 2, 3),]
+
+# merge MTurk datasets
+# referenced: https://stackoverflow.com/questions/8091303/simultaneously-merge-multiple-data-frames-in-a-list
+mturk.merge2 = list(w.mturk.data, t.mturk.data, f.mturk.data) %>% reduce(full_join, by = "Q47")
+
+# new variable to differentiate between MTurk vs UVA participant
+mturk.merge2$participant_type = "MTurk"
+uva.data$participant_type = "UVA"
+
+# new variable "day" for the number of days completed 
+all.noID$number_of_days = 1
+
+mturk.merge2$number_of_days = NA
+for (i in 1:217){                             # for each row in combined MTurk dataset
+  value = mturk.merge2$Q47[i]                 # store id as value
+  count = 0                                   # initial count is 0
+  if (value %in% w.mturk.data$Q47 == TRUE)    # check if ID is in Thursday dataset
+  {count = count + 1}                         # if so, add 1 to the count
+  if (value %in% t.mturk.data$Q47 == TRUE)    # check if ID is in Thursday dataset
+  {count = count + 1}                         # if so, add 1 to the count
+  if (value %in% f.mturk.data$Q47 == TRUE)    # check if ID is in Friday dataset
+  {count = count + 1}                         # if so, add 1 to the count
+  
+  mturk.merge2$number_of_days[i] = count      # store final count for row
+}
+
+# add back rows with no ID
+mturk.merge2 = bind_rows(mturk.merge2, all.noID)
+
+# merge uva and MTurk data
+merge2 = bind_rows(mturk.merge2, uva.data)
+
+# export .csv
+write.csv(merge2, file="Food_Diary_merge2.csv")
+
