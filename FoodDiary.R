@@ -99,6 +99,18 @@ for (i in 1:217){                             # for each row in combined MTurk d
   mturk.merge2$number_of_days[i] = count      # store final count for row
 }
 
+# calculate number of days completed for UVA participants (same as earlier)
+uva.data$UVA_ID = tolower(uva.data$UVA_ID)                   
+uva.data$UVA_ID[49] = "sm4ztg"                 
+
+uva.table = table(uva.data$UVA_ID)
+uva.data$number_of_days = NA
+for (i in 1:122){                                 
+  value = uva.data$UVA_ID[i]                       
+  count = as.numeric(uva.table[names(uva.table)==value])  
+  uva.data$number_of_days[i] = count                        
+}
+
 # add back rows with no ID
 mturk.merge2 = bind_rows(mturk.merge2, all.noID)
 
