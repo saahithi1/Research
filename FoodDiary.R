@@ -1,4 +1,7 @@
 setwd("~/Desktop/Research/Food_Diary")
+library(dplyr)
+library(purrr)
+library(tidyverse)
 
 # import data
 food.diary.uva.data <- read.csv("TGGoodDiaryUVA.csv")
@@ -12,7 +15,7 @@ food.diary.mturk.w.data$dataset <- "TGFoodDiarymTurkW"
 food.diary.mturk.t.data$dataset <- "TGFoodDiarymTurkT"
 food.diary.mturk.f.data$dataset <- "TGFoodDiarymTurkFri"
 
-# save rows with no worker ID/test
+# save rows with no worker ID (and test data)
 noID <- food.diary.mturk.w.data[c(215, 216, 217, 218),]
 w.test <- food.diary.mturk.w.data[3:5,]
 t.test <- food.diary.mturk.t.data[3:5,]
@@ -26,26 +29,27 @@ food.diary.mturk.w.data <- food.diary.mturk.w.data[-c(3, 4, 5, 215, 216, 217, 21
 food.diary.mturk.t.data <- food.diary.mturk.t.data[-c(3, 4, 5),]
 
 # merge mturk datasets
-all.mturk <- join_all(list(food.diary.mturk.w.data, food.diary.mturk.t.data, food.diary.mturk.f.data),
-                  by="Q47", type = "full")
+# from https://stackoverflow.com/questions/8091303/simultaneously-merge-multiple-data-frames-in-a-list
+all.mturk <- list(food.diary.mturk.w.data, food.diary.mturk.t.data, food.diary.mturk.f.data) %>% reduce(full_join, by = "Q47")
+
+# new variable "day" for the number of days completed
+all.noID$day <- 1                               # for participants w/o an ID, I set the variable equal to 1
+
+all.mturk$day <- NA
+for (i in 3:214){                               # for each row in Wednesday dataset
+  value <- food.diary.mturk.w.data$Q47[i]       # store id as value
+  count <- 1                                    # initial count is 1 because they participated on Wednesday    
+  if (value %in% food.diary.mturk.t.data$Q47)   # check if ID is in Thursday dataset
+  {count <- count + 1}                          # if so, add 1 to the count
+  if (value %in% food.diary.mturk.f.data$Q47)   # check if ID is in Friday dataset
+  {count <- count + 1}                          # if so, add 1 to the count
+  
+  all.mturk$day[i] <- count                     # store final count for row
+}
 
 # new variable for mTurk or UVA participant
 all.mturk$participant <- "MTurk"
 food.diary.uva.data$participant <- "UVA"
-
-# new variable for day
-all.mturk$day <- NA
-for (i in 1:230){
-  count <- 0
-  if (is.null(all.mturk$WEat[i]) == FALSE)
-  {count <- count + 1}
-  if (is.null(all.mturk$TEat[i]) == FALSE)
-  {count <- count + 1})
-  if (is.null(all.mturk$FEat[i]) == FALSE)
-  {count <- count + 1}
-  
-  all.mturk$day[i] <- count
-}
 
 # export .csv
 write.csv(all.mturk, file="merged.csv")
