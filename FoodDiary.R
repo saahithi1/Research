@@ -47,6 +47,9 @@ for (i in 3:214){                               # for each row in Wednesday data
   all.mturk$day[i] <- count                     # store final count for row
 }
 
+# add back rows with no ID
+all.mturk <- rbind.fill(all.mturk, all.noID)
+
 # new variable for mTurk or UVA participant
 all.mturk$participant <- "MTurk"
 food.diary.uva.data$participant <- "UVA"
