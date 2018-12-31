@@ -10,15 +10,15 @@ food.diary.mturk.t.data <- read.csv("TGFoodDiarymTurkT.csv", stringsAsFactors = 
 food.diary.mturk.f.data <- read.csv("TGFoodDiarymTurkFri.csv", stringsAsFactors = FALSE)
 
 # save rows with no worker ID (and test data)
-noID <- food.diary.mturk.w.data[c(215, 216, 217, 218),]
+w.noID <- food.diary.mturk.w.data[c(215, 216, 217, 218),]
 w.test <- food.diary.mturk.w.data[3:5,]
 t.test <- food.diary.mturk.t.data[3:5,]
 
 # combine into one dataframe
-a <- rbind(noID, w.test)
-all.noID <- rbind.fill(a, t.test)
+all.w <- bind_rows(w.noID, w.test)
+all.noID <- bind_rows(all.w, t.test)
 
-# remove saved rows from data frame (they'll be added back after merging)
+# remove rows w/o ID from data frame (they'll be added back after merging)
 food.diary.mturk.w.data <- food.diary.mturk.w.data[-c(3, 4, 5, 215, 216, 217, 218),]
 food.diary.mturk.t.data <- food.diary.mturk.t.data[-c(3, 4, 5),]
 
@@ -42,14 +42,15 @@ for (i in 3:214){                               # for each row in Wednesday data
 }
 
 # add back rows with no ID
-all.mturk <- rbind.fill(all.mturk, all.noID)
+all.mturk <- bind_rows(all.mturk, all.noID)
 
 # new variable for mTurk or UVA participant
 all.mturk$participant <- "MTurk"
 food.diary.uva.data$participant <- "UVA"
 
 # merge uva and mturk data
-all.data <- rbind.fill(all.mturk, food.diary.uva.data)
+all.data <- bind_rows(all.mturk, food.diary.uva.data)
 
 # export .csv
+# << you can change the name of the variable by changing "merged">>
 write.csv(all.data, file="merged.csv")
