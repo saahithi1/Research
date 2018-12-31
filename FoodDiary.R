@@ -54,6 +54,9 @@ all.mturk <- rbind.fill(all.mturk, all.noID)
 all.mturk$participant <- "MTurk"
 food.diary.uva.data$participant <- "UVA"
 
+# merge uva and mturk data
+all.data <- rbind.fill(all.mturk, food.diary.uva.data)
+
 # export .csv
 write.csv(all.data, file="merged.csv")
 
