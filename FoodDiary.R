@@ -57,17 +57,32 @@ merge.1[is.na(merge.1)] <- ""
 # recoding variables
 for (i in 1:490){
   for(j in 1:55){
-    value = j
-    if(value == "Much less than normal" || "Strongly disagree"){value = 1}
-    if(value == "Moderately less than normal" || "Moderately disagree"){value = 2}
-    if(value == "Slightly less than normal" || "Neither disagree or agree"){value = 3}
-    if(value == "About the same" || "Moderately agree"){value = 4}
-    if(value == "Slightly more than normal" || "Strongly agree"){value = 5}
-    if(value == "Moderately more than normal"){value = 6}
-    if(value == "Much more than normal"){value = 7}
+    value = merge1[i,j]
+    if(value == "Much less than normal"){merge1[i,j] = 1}               # for more/less normal variables
+    else if(value == "Moderately less than normal"){merge1[i,j] = 2}
+    else if(value == "Slightly less than normal"){merge1[i,j] = 3}
+    else if(value == "About the same"){merge1[i,j] = 4}
+    else if(value == "Slightly more than normal"){merge1[i,j] = 5}
+    else if(value == "Moderately more than normal"){merge1[i,j] = 6}
+    else if(value == "Much more than normal"){merge1[i,j] = 7}
     
-    if(value == "Yes, I am planning on exercising"){value = 1}
-    if(value == "No, I am not planning on exercise"){value = 0}
+    else if(value == "Strongly disagree"){merge1[i,j] = 1}                  # change agree/disagree variables
+    else if(value == "Moderately disagree"){merge1[i,j] = 2}
+    else if(value == "Neither disagree nor agree"){merge1[i,j] = 3}
+    else if(value == "Moderately agree"){merge1[i,j] = 4}
+    else if(value == "Strongly agree"){merge1[i,j] = 5}
+    
+    else if(value == "No, I am not planning on exercise"){merge1[i,j] = 0}  # change yes/no variables
+    else if(value == "No"){merge1[i,j] = 0}
+    else if(value == "No, I do not plan to exercise"){merge1[i,j] = 0}
+    
+    else if(value == "Yes, I am planning on exercising"){merge1[i,j] = 1}
+    else if(value == "Yes"){merge1[i,j] = 1}
+    else if(value == "Yes, I plan to exercise"){merge1[i,j] = 1}
+    else if(value == "Yes, I would like to take part in this study, and confirm that I AM A US RESIDENT, and I  and am 18 or older."){merge1[i,j] = 1}
+    
+    else if(value == "I have already exercised"){merge1[i,j] = 2}
+    else if(value == "I have already exercised today"){merge1[i,j] = 2}
   }
 }
 
