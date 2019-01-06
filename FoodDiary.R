@@ -54,6 +54,23 @@ merge.1 <- bind_rows(list(mturk.merge, uva.data))
 # changing NA to blanks
 merge.1[is.na(merge.1)] <- ""
 
+# recoding variables
+for (i in 1:490){
+  for(j in 1:55){
+    value = j
+    if(value == "Much less than normal" || "Strongly disagree"){value = 1}
+    if(value == "Moderately less than normal" || "Moderately disagree"){value = 2}
+    if(value == "Slightly less than normal" || "Neither disagree or agree"){value = 3}
+    if(value == "About the same" || "Moderately agree"){value = 4}
+    if(value == "Slightly more than normal" || "Strongly agree"){value = 5}
+    if(value == "Moderately more than normal"){value = 6}
+    if(value == "Much more than normal"){value = 7}
+    
+    if(value == "Yes, I am planning on exercising"){value = 1}
+    if(value == "No, I am not planning on exercise"){value = 0}
+  }
+}
+
 # export .csv
 write.csv(merge.1, file="merge1.csv")
 
