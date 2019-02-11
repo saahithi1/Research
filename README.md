@@ -2,7 +2,7 @@
 Code for the Behavioral Lab at UVA Batten
 
 R
-* FEVS_merging - merge 200+ FEVS datasets
+* FEVS_merging - merge 200+ FEVS datasets (SEC)
 * merging_NRE_data - merge 7 NRE datasets
 * symmetry_study - restructure data, check for symmetry, recreate & export grids
 * FoodDiary - merge 3 Mturk datasets & 1 UVA dataset 
