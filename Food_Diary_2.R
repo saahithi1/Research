@@ -46,10 +46,6 @@ t.uva.data[which(duplicated(t.uva.data[,"UVA_ID"])),"UVA_ID"]
 f.uva.data[which(duplicated(f.uva.data[,"UVA_ID"])),"UVA_ID"]
 # duplicates: "rbs8gs" "ael2ve"
 
-###########################################################################
-########################## merging all responses ##########################
-###########################################################################
-
 # edit column names to keep track of which dataset values came from
 colnames(w.mturk.data) = paste("W", colnames(w.mturk.data), sep = "_")
 colnames(w.mturk.data)[19] = "Q47"
@@ -69,39 +65,18 @@ colnames(t.uva.data)[47] = "UVA_ID"
 colnames(f.uva.data) = paste("W_UVA", colnames(f.uva.data), sep = "_")
 colnames(f.uva.data)[47] = "UVA_ID"
 
+###########################################################################
+########################## merging all responses ##########################
+###########################################################################
+
 # merge MTurk data
-mturk.merge = bind_rows(list(w.mturk.data, t.mturk.data, f.mturk.data))
-
-# new variable to differentiate between MTurk vs UVA participant
-mturk.merge$participant_type = "MTurk"
-uva.data$participant_type = "UVA"
-
-# calculate number of days completed for MTurk participants 
-mturk.table = table(mturk.merge$Q47)
-mturk.merge$number_of_days = NA
-for (i in 1:368){                                             # for each row in mturk.merge dataset
-  value = mturk.merge$Q47[i]                                  # value = worker ID
-  count = as.numeric(mturk.table[names(mturk.table)==value])  # count = frequency of worker ID in combined dataset
-  mturk.merge$number_of_days[i] = count                       # record count
-}
-
-# calculate number of days completed for UVA participants
-uva.data$UVA_ID = tolower(uva.data$UVA_ID)                    # change values to all lowercase
-uva.data$UVA_ID[49] = "sm4ztg"                                # one person added @virginia.edu so I manually edited it
-
-uva.table = table(uva.data$UVA_ID)
-uva.data$number_of_days = NA
-for (i in 1:122){                                             # for each row in uva.data dataset
-  value = uva.data$UVA_ID[i]                                  # value = UVA ID
-  count = as.numeric(uva.table[names(uva.table)==value])      # count = frequency of UVA ID in dataset
-  uva.data$number_of_days[i] = count                          # record count
-}
+mturk.merge = bind_rows(list(w.mturk.data, t.mturk.data, f.mturk.data)) # 368 obs. of 85 var.
 
 # merge MTurk and uva data
-merge1 = bind_rows(list(mturk.merge, uva.data))
+merge1 = bind_rows(list(mturk.merge, uva.data)) # 490 obs. of 134 var.
 
 # changing NA to blanks
-#merge1[is.na(merge1)] = ""
+merge1[is.na(merge1)] = ""
 
 # recoding variables
 
@@ -133,32 +108,63 @@ merge1[merge1 == "I have already exercised today"] <- 2
 
 # merge common ID
 # source https://stackoverflow.com/questions/19592706/setting-na-to-blank
-# source https://stackoverflow.com/questions/50293671/r-merge-rows-in-group-while-replacing-nas
 
 mturk.id.subset <- merge1[which(merge1$Q47 != "" & merge1$Q47 != "test"),]
 mturk.id.subset <- sapply(mturk.id.subset, as.character)
-mturk.id.subset[is.na(mturk.id.subset)] <- " "
-mturk.id.subset <- as.data.frame(mturk.id.subset)
-
-no.id.subset <- merge1[which(merge1$Q47 == "" & merge1$UVA_ID == "" | merge1$Q47 == "test"),]
-no.id.subset <- sapply(no.id.subset, as.character)
-no.id.subset[is.na(no.id.subset)] <- " "
-no.id.subset <- as.data.frame(no.id.subset)
+mturk.id.subset[is.na(mturk.id.subset)] <- ""
+mturk.id.subset <- as.data.frame(mturk.id.subset) # 358 obs. of 134 var.
 
 uva.id.subset <- merge1[which(merge1$UVA_ID != ""),]
 uva.id.subset <- sapply(uva.id.subset, as.character)
-uva.id.subset[is.na(uva.id.subset)] <- " "
-uva.id.subset <- as.data.frame(uva.id.subset)
+uva.id.subset[is.na(uva.id.subset)] <- ""
+uva.id.subset <- as.data.frame(uva.id.subset) # 111 obs. of 134 var.
 
-mturk.id.subset %>%
-  group_by(Q47) %>%
-  summarise_all(funs(trimws(paste(., collapse = '')))) -> mturk.merge1
+no.id.subset <- merge1[which(merge1$Q47 == "" & merge1$UVA_ID == "" | merge1$Q47 == "test"),]
+no.id.subset <- sapply(no.id.subset, as.character)
+no.id.subset[is.na(no.id.subset)] <- ""
+no.id.subset <- as.data.frame(no.id.subset) # 21 obs. of 134 var.
+no.id.subset$participant_type = NA
+no.id.subset$number_of_days = NA
 
-uva.id.subset %>%
-  group_by(UVA_ID) %>%
-  summarise_all(funs(trimws(paste(., collapse = '')))) -> uva.merge1
+# subset mturk rows and merge by Q47/UVA_ID
+# source https://stackoverflow.com/questions/41068734/r-collapse-multiple-rows-into-1-row-same-columns
+mturk.merge1 <- data.table(mturk.id.subset)
+mturk.merge1 <- mturk.merge1[, lapply(.SD, paste0, collapse=""), by=Q47] # 213 obs. of 134 var.
 
-merge1 <- rbind(mturk.merge1, uva.merge1, no.id.subset)
+uva.merge1 <- data.table(uva.id.subset)
+uva.merge1 <- uva.merge1[, lapply(.SD, paste0, collapse=""), by=UVA_ID] # 38 obs. of 134 var.
+
+# new variable to differentiate between MTurk vs UVA participant
+mturk.merge1$participant_type = "MTurk"
+uva.merge1$participant_type = "UVA"
+
+# calculate number of days completed for MTurk participants 
+mturk.merge1$number_of_days = NA
+for (i in 1:213){                             # for each row in combined MTurk dataset
+  value = mturk.merge1$Q47[i]                 # store id as value
+  count = 0                                   # initial count is 0
+  if (value %in% w.mturk.data$Q47 == TRUE)    # check if ID is in Thursday dataset
+  {count = count + 1}                         # if so, add 1 to the count
+  if (value %in% t.mturk.data$Q47 == TRUE)    # check if ID is in Thursday dataset
+  {count = count + 1}                         # if so, add 1 to the count
+  if (value %in% f.mturk.data$Q47 == TRUE)    # check if ID is in Friday dataset
+  {count = count + 1}                         # if so, add 1 to the count
+  
+  mturk.merge1$number_of_days[i] = count      # store final count for row
+}
+
+# calculate number of days completed for UVA participants
+uva.table = table(uva.data$UVA_ID)
+uva.merge1$number_of_days = NA
+for (i in 1:38){                                             # for each row in uva.data dataset
+  value = uva.merge1$UVA_ID[i]                                  # value = UVA ID
+  count = as.numeric(uva.table[names(uva.table)==value])      # count = frequency of UVA ID in dataset
+  uva.merge1$number_of_days[i] = count                          # record count
+}
+
+# merge mturk and uva subsets
+merge1 <- rbind(mturk.merge1, uva.merge1, no.id.subset) # 272 obs. of 136 var.
+merge1 <- as.data.frame(merge1)
 
 # character to numeric
 merge1[,c(18,20:28, 37:46)] <- sapply(merge1[,c(18,20:28, 37:46)],as.numeric)
