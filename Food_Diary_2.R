@@ -186,4 +186,3 @@ merge1[,c(18,20:28, 54:58, 78:84, 106:114, 123:132)] <- sapply(merge1[,c(18,20:2
 
 # export .csv
 write.csv(merge1, file="Food_Diary_merge2.csv")
-write.csv(merge1, file="Food_Diary_merge2.csv")
