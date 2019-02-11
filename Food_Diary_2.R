@@ -59,10 +59,10 @@ colnames(f.mturk.data)[19] = "Q47"
 colnames(w.uva.data) = paste("W_UVA", colnames(w.uva.data), sep = "_")
 colnames(w.uva.data)[47] = "UVA_ID"
 
-colnames(t.uva.data) = paste("W_UVA", colnames(t.uva.data), sep = "_")
+colnames(t.uva.data) = paste("T_UVA", colnames(t.uva.data), sep = "_")
 colnames(t.uva.data)[47] = "UVA_ID"
 
-colnames(f.uva.data) = paste("W_UVA", colnames(f.uva.data), sep = "_")
+colnames(f.uva.data) = paste("F_UVA", colnames(f.uva.data), sep = "_")
 colnames(f.uva.data)[47] = "UVA_ID"
 
 ###########################################################################
