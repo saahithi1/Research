@@ -13,6 +13,14 @@ f.mturk.data = read.csv("TGFoodDiarymTurkFri.csv", header = TRUE,
 uva.data = read.csv("TGGoodDiaryUVA.csv", header = TRUE, 
                         stringsAsFactors = FALSE, strip.white = TRUE)[-c(1,2),]
 
+# clean data
+uva.data$UVA_ID = tolower(uva.data$UVA_ID)                    # change values to all lowercase
+uva.data$UVA_ID[49] = "sm4ztg"                                # one person added @virginia.edu so I manually edited it
+
+# check numbers
+w.mturk.data[which(duplicated(w.mturk.data[,"Q47"])),"Q47"]
+# duplicates: "test" "AEEYCRN6WP4JV" "A9TENHCM24SAZ" "A7HJXH4A7V78Q" ""
+
 
 ###########################################################################
 ########################## merging all responses ##########################
