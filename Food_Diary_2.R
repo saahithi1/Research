@@ -13,14 +13,38 @@ f.mturk.data = read.csv("TGFoodDiarymTurkFri.csv", header = TRUE,
 uva.data = read.csv("TGGoodDiaryUVA.csv", header = TRUE, 
                         stringsAsFactors = FALSE, strip.white = TRUE)[-c(1,2),]
 
+###########################################################################
+############################## preprocessing ##############################
+###########################################################################
+
 # clean data
 uva.data$UVA_ID = tolower(uva.data$UVA_ID)                    # change values to all lowercase
 uva.data$UVA_ID[49] = "sm4ztg"                                # one person added @virginia.edu so I manually edited it
 
-# check numbers
+# separate uva.data by days
+no.id.uva.data <- uva.data[which(uva.data$UVA_ID == ""),]
+w.uva.data <- uva.data[which(uva.data$UVA_ID != "" & uva.data$date == "Wednesday, November 21"),]
+t.uva.data <- uva.data[which(uva.data$UVA_ID != "" & uva.data$date == "Thursday, November 22"),]
+f.uva.data <- uva.data[which(uva.data$UVA_ID != "" & uva.data$date == "Friday, November 23"),]
+
+# check for duplicate entries
 w.mturk.data[which(duplicated(w.mturk.data[,"Q47"])),"Q47"]
 # duplicates: "test" "AEEYCRN6WP4JV" "A9TENHCM24SAZ" "A7HJXH4A7V78Q" ""
 
+t.mturk.data[which(duplicated(t.mturk.data[,"Q47"])),"Q47"]
+# duplicates: "test"
+
+f.mturk.data[which(duplicated(f.mturk.data[,"Q47"])),"Q47"]
+# duplicates: "A1H55AUY7JFDHH"
+
+w.uva.data[which(duplicated(w.uva.data[,"UVA_ID"])),"UVA_ID"]
+# duplicates: "mw2ke"
+
+t.uva.data[which(duplicated(t.uva.data[,"UVA_ID"])),"UVA_ID"]
+# duplicates: "mw2ke" "hh4db"
+
+f.uva.data[which(duplicated(f.uva.data[,"UVA_ID"])),"UVA_ID"]
+# duplicates: "rbs8gs" "ael2ve"
 
 ###########################################################################
 ########################## merging all responses ##########################
