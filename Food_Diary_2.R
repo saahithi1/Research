@@ -60,8 +60,14 @@ colnames(t.mturk.data)[19] = "Q47"
 colnames(f.mturk.data) = paste("F", colnames(f.mturk.data), sep = "_")
 colnames(f.mturk.data)[19] = "Q47"
 
-colnames(uva.data) = paste("UVA", colnames(uva.data), sep = "_")
-colnames(uva.data)[47] = "UVA_ID"
+colnames(w.uva.data) = paste("W_UVA", colnames(w.uva.data), sep = "_")
+colnames(w.uva.data)[47] = "UVA_ID"
+
+colnames(t.uva.data) = paste("W_UVA", colnames(t.uva.data), sep = "_")
+colnames(t.uva.data)[47] = "UVA_ID"
+
+colnames(f.uva.data) = paste("W_UVA", colnames(f.uva.data), sep = "_")
+colnames(f.uva.data)[47] = "UVA_ID"
 
 # merge MTurk data
 mturk.merge = bind_rows(list(w.mturk.data, t.mturk.data, f.mturk.data))
