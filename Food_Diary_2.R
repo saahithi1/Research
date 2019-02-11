@@ -79,7 +79,6 @@ merge1 = bind_rows(list(mturk.merge, uva.data)) # 490 obs. of 134 var.
 merge1[is.na(merge1)] = ""
 
 # recoding variables
-
 merge1[merge1 == "Much less than normal"] <- 1              # change more/less normal variables
 merge1[merge1 == "Moderately less than normal"] <- 2
 merge1[merge1 == "Slightly less than normal"] <- 3
