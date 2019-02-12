@@ -2,6 +2,7 @@ setwd("~/Desktop/Research/Food_Diary")
 library(dplyr)
 library(data.table)
 library(tidyr)
+library(magrittr)
 
 # import data (removing first 2 rows for easy merging)
 w.mturk.data = read.csv("TGFoodDiarymTurkW.csv", header = TRUE, 
@@ -182,7 +183,10 @@ merge1 <- rbind(mturk.merge1, uva.merge1, mturk.no.id.subset, uva.no.id.subset) 
 merge1 <- as.data.frame(merge1)
 
 # character to numeric
-merge1[,c(18,20:28, 54:58, 78:84, 106:114, 123:132)] <- sapply(merge1[,c(18,20:28, 54:58, 78:84, 106:114, 123:132)],as.numeric)
+# source: https://stackoverflow.com/questions/3796266/change-the-class-from-factor-to-numeric-of-many-columns-in-a-data-frame
+cols = c(20:28, 54:58, 78:84, 105:113, 122:131)
+merge1[,cols] %<>% lapply(function(x) as.numeric(as.character(x)))
+
 
 # export .csv
 write.csv(merge1, file="Food_Diary_merge2.csv")
