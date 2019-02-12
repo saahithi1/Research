@@ -55,100 +55,35 @@ merge.1 <- bind_rows(list(mturk.merge, uva.data))
 merge.1[is.na(merge.1)] <- ""
 
 # recoding variables
-for (i in 1:490){
-  for(j in 1:55){
-    value = merge1[i,j]
-    if(value == "Much less than normal"){merge1[i,j] = 1}               # for more/less normal variables
-    else if(value == "Moderately less than normal"){merge1[i,j] = 2}
-    else if(value == "Slightly less than normal"){merge1[i,j] = 3}
-    else if(value == "About the same"){merge1[i,j] = 4}
-    else if(value == "Slightly more than normal"){merge1[i,j] = 5}
-    else if(value == "Moderately more than normal"){merge1[i,j] = 6}
-    else if(value == "Much more than normal"){merge1[i,j] = 7}
-    
-    else if(value == "Strongly disagree"){merge1[i,j] = 1}                  # change agree/disagree variables
-    else if(value == "Moderately disagree"){merge1[i,j] = 2}
-    else if(value == "Neither disagree nor agree"){merge1[i,j] = 3}
-    else if(value == "Moderately agree"){merge1[i,j] = 4}
-    else if(value == "Strongly agree"){merge1[i,j] = 5}
-    
-    else if(value == "No, I am not planning on exercise"){merge1[i,j] = 0}  # change yes/no variables
-    else if(value == "No"){merge1[i,j] = 0}
-    else if(value == "No, I do not plan to exercise"){merge1[i,j] = 0}
-    
-    else if(value == "Yes, I am planning on exercising"){merge1[i,j] = 1}
-    else if(value == "Yes"){merge1[i,j] = 1}
-    else if(value == "Yes, I plan to exercise"){merge1[i,j] = 1}
-    else if(value == "Yes, I would like to take part in this study, and confirm that I AM A US RESIDENT, and I  and am 18 or older."){merge1[i,j] = 1}
-    
-    else if(value == "I have already exercised"){merge1[i,j] = 2}
-    else if(value == "I have already exercised today"){merge1[i,j] = 2}
-  }
-}
+merge1[merge1 == "Much less than normal"] <- 1              # change more/less normal variables
+merge1[merge1 == "Moderately less than normal"] <- 2
+merge1[merge1 == "Slightly less than normal"] <- 3
+merge1[merge1 == "About the same"] <- 4
+merge1[merge1 == "Slightly more than normal"] <- 5
+merge1[merge1 == "Moderately more than normal"] <- 6
+merge1[merge1 == "Much more than normal"] <- 7
+
+merge1[merge1 == "Strongly disagree"] <- 1                  # change agree/disagree variables
+merge1[merge1 == "Moderately disagree"] <- 2
+merge1[merge1 == "Neither disagree nor agree"] <- 3
+merge1[merge1 == "Moderately agree"] <- 4
+merge1[merge1 == "Strongly agree"] <- 5
+
+merge1[merge1 == "No, I am not planning on exercise"] <- 0  # change yes/no variables
+merge1[merge1 == "No"] <- 0
+merge1[merge1 == "No, I do not plan to exercise"] <- 0
+
+merge1[merge1 == "Yes, I am planning on exercising"] <- 1
+merge1[merge1 == "Yes"] <- 1
+merge1[merge1 == "Yes, I plan to exercise"] <- 1
+merge1[merge1 == "Yes, I would like to take part in this study, and confirm that I AM A US RESIDENT, and I  and am 18 or older."] <- 1
+
+merge1[merge1 == "I have already exercised"] <- 2
+merge1[merge1 == "I have already exercised today"] <- 2
+
+# character to numeric
+cols = c(18,20:28, 37:46)
+merge1[,cols] %<>% lapply(function(x) as.numeric(as.character(x)))#
 
 # export .csv
 write.csv(merge.1, file="merge1.csv")
-
-############################################################################
-#################### merging by matching participant ID ####################
-############################################################################
-
-# record rows with no worker ID (and test data)
-w.noID = w.mturk.data[c(213, 214, 215, 216),]
-w.test = w.mturk.data[1:3,]
-t.test = t.mturk.data[1:3,]
-
-# combine into one dataframe
-all.w = bind_rows(w.noID, w.test)
-all.noID = bind_rows(all.w, t.test)
-
-# remove rows w/o ID from data frame (to be added back after merging)
-w.mturk.data = w.mturk.data[-c(1, 2, 3, 213, 214, 215, 216),]
-t.mturk.data = t.mturk.data[-c(1, 2, 3),]
-
-# merge MTurk datasets
-# referenced: https://stackoverflow.com/questions/8091303/simultaneously-merge-multiple-data-frames-in-a-list
-mturk.merge2 = list(w.mturk.data, t.mturk.data, f.mturk.data) %>% reduce(full_join, by = "Q47")
-
-# new variable to differentiate between MTurk vs UVA participant
-mturk.merge2$participant_type = "MTurk"
-uva.data$participant_type = "UVA"
-
-# new variable "day" for the number of days completed 
-all.noID$number_of_days = 1
-
-mturk.merge2$number_of_days = NA
-for (i in 1:217){                             # for each row in combined MTurk dataset
-  value = mturk.merge2$Q47[i]                 # store id as value
-  count = 0                                   # initial count is 0
-  if (value %in% w.mturk.data$Q47 == TRUE)    # check if ID is in Thursday dataset
-  {count = count + 1}                         # if so, add 1 to the count
-  if (value %in% t.mturk.data$Q47 == TRUE)    # check if ID is in Thursday dataset
-  {count = count + 1}                         # if so, add 1 to the count
-  if (value %in% f.mturk.data$Q47 == TRUE)    # check if ID is in Friday dataset
-  {count = count + 1}                         # if so, add 1 to the count
-  
-  mturk.merge2$number_of_days[i] = count      # store final count for row
-}
-
-# calculate number of days completed for UVA participants (same as earlier)
-uva.data$UVA_ID = tolower(uva.data$UVA_ID)                   
-uva.data$UVA_ID[49] = "sm4ztg"                 
-
-uva.table = table(uva.data$UVA_ID)
-uva.data$number_of_days = NA
-for (i in 1:122){                                 
-  value = uva.data$UVA_ID[i]                       
-  count = as.numeric(uva.table[names(uva.table)==value])  
-  uva.data$number_of_days[i] = count                        
-}
-
-# add back rows with no ID
-mturk.merge2 = bind_rows(mturk.merge2, all.noID)
-
-# merge uva and MTurk data
-merge2 = bind_rows(mturk.merge2, uva.data)
-
-# export .csv
-write.csv(merge2, file="Food_Diary_merge2.csv")
-
