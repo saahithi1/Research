@@ -68,9 +68,6 @@ colnames(t.uva.data)[1:19] = paste("T_UVA", colnames(t.uva.data), sep = "_")
 
 colnames(f.uva.data)[1:19] = paste("F_UVA", colnames(f.uva.data), sep = "_")
 
-# delete empty columns
-# mydf[!sapply(mydf, function(x) all(x == ""))]
-
 ###########################################################################
 ########################## merging all responses ##########################
 ###########################################################################
@@ -87,7 +84,11 @@ merge1 = bind_rows(list(mturk.merge, uva.merge)) # 479 obs. of 191 var.
 # changing NA to blanks
 merge1[is.na(merge1)] = ""
 
-# recoding variables
+
+###########################################################################
+########################### recoding variables ############################
+###########################################################################
+
 merge1[merge1 == "Much less than normal"] <- 1              # change more/less normal variables
 merge1[merge1 == "Moderately less than normal"] <- 2
 merge1[merge1 == "Slightly less than normal"] <- 3
@@ -114,7 +115,10 @@ merge1[merge1 == "Yes, I would like to take part in this study, and confirm that
 merge1[merge1 == "I have already exercised"] <- 2
 merge1[merge1 == "I have already exercised today"] <- 2
 
-# merge common ID
+###########################################################################
+########################## merge by common ID #############################
+###########################################################################
+
 # source https://stackoverflow.com/questions/19592706/setting-na-to-blank
 
 mturk.id.subset <- merge1[which(merge1$Q47 != "" & merge1$Q47 != "test"),]
@@ -146,6 +150,10 @@ mturk.merge1 <- mturk.merge1[, lapply(.SD, paste0, collapse=""), by=Q47] # 213 o
 uva.merge1 <- data.table(uva.id.subset)
 uva.merge1 <- uva.merge1[, lapply(.SD, paste0, collapse=""), by=UVA_ID] # 38 obs. of 191 var.
 
+###########################################################################
+########################## add new variables ##############################
+###########################################################################
+
 # new variable to differentiate between MTurk vs UVA participant
 mturk.merge1$participant_type = "MTurk"
 mturk.no.id.subset$participant_type = "MTurk"
@@ -155,6 +163,7 @@ uva.merge1$participant_type = "UVA"
 # calculate number of days completed for MTurk participants 
 mturk.no.id.subset$number_of_days = NA
 mturk.merge1$number_of_days = NA
+
 for (i in 1:213){                             # for each row in combined MTurk dataset
   value = mturk.merge1$Q47[i]                 # store id as value
   count = 0                                   # initial count is 0
@@ -172,11 +181,17 @@ for (i in 1:213){                             # for each row in combined MTurk d
 uva.table = table(uva.data$UVA_ID)
 uva.no.id.subset$number_of_days = NA
 uva.merge1$number_of_days = NA
+
 for (i in 1:38){                                             # for each row in uva.data dataset
   value = uva.merge1$UVA_ID[i]                                  # value = UVA ID
   count = as.numeric(uva.table[names(uva.table)==value])      # count = frequency of UVA ID in dataset
+  
   uva.merge1$number_of_days[i] = count                          # record count
 }
+
+###########################################################################
+############################## final merge ################################
+###########################################################################
 
 # merge mturk and uva subsets
 merge1 <- rbind(mturk.merge1, uva.merge1, mturk.no.id.subset, uva.no.id.subset) # 272 obs. of 193 var
@@ -187,6 +202,9 @@ merge1 <- as.data.frame(merge1)
 cols = c(20:28, 54:58, 78:84, 105:113, 122:131)
 merge1[,cols] %<>% lapply(function(x) as.numeric(as.character(x)))
 
+# delete empty columns
+# test = merge1[!sapply(merge1, function(x) all(is.na(x) == TRUE | x == ""))]
+# setdiff(merge1, test)
 
 # export .csv
 write.csv(merge1, file="Food_Diary_merge2.csv")
